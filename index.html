@@ -1760,7 +1760,8 @@
     // Helper per creare slug corretti secondo la tassonomia di Subito.it
     function getSubitoModelSlug(makeSlug, modelRaw) {
       if (!modelRaw) return '';
-      let m = slugify(modelRaw);
+      const normalizedModel = makeSlug === 'mg' ? modelRaw.replace(/^MG\s+/i, '') : modelRaw;
+      let m = slugify(normalizedModel);
       
       // Mappature dedicate per Subito.it
       if (makeSlug === 'alfa-romeo') {
