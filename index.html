@@ -160,7 +160,7 @@
     <!-- ================= LEFT SIDEBAR (FILTERS & SMART EXPANSION) ================= -->
     <aside class="w-full md:w-[342px] lg:w-[378px] bg-slate-50 border-r border-slate-200 flex flex-col flex-shrink-0 h-full overflow-hidden shadow-md z-20">
       
-      <!-- Scrollable Form Area with slim scrollbar -->
+      <!-- Scrollable Form Area with slim scrollbar 23232 -->
       <div class="flex-grow overflow-y-auto slim-scrollbar px-3.5 py-3 space-y-3">
         
         <!-- AUTO-EXPANSION INTELLIGENTE WIDGET (MINIMAL ACCORDION / COMPACT STRIP) -->
@@ -1635,6 +1635,15 @@
         .replace(/-+$/, '');
     }
 
+    // AutoScout24 usa il marchio nel segmento dedicato: per MG evita di
+    // ripeterlo nei modelli che nel catalogo sono etichettati "MG ...".
+    function getAutoScoutModelSlug(make, model) {
+      if (!model) return '';
+      const isMG = slugify(make) === 'mg';
+      const normalizedModel = isMG ? model.replace(/^MG\s+/i, '') : model;
+      return slugify(normalizedModel);
+    }
+
     // Costruzione URL AutoScout24
     function buildAutoScoutUrl() {
       const make = document.getElementById('make').value.trim();
@@ -1653,7 +1662,7 @@
       // Segmenti URL path
       let pathSegments = ['https://www.autoscout24.it/lst'];
       const makeSlug = slugify(make);
-      const modelSlug = slugify(model);
+      const modelSlug = getAutoScoutModelSlug(make, model);
 
       if (makeSlug) pathSegments.push(makeSlug);
       if (modelSlug) pathSegments.push(modelSlug);
